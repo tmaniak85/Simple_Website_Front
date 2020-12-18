@@ -21,9 +21,31 @@ window.onload = function () {
     var tracer = new Product('YAMAHA TRACER', 40000, "img/TRACER900.jpg");
     var z1000 = new Product('KAWASAKI Z1000SX', 40000, "img/Z1000SX.jpg");
 
-
     var productArray = [bKing, fazer, gs500, hayabusa, monster, mt10, multistrada, s1000, sv, tiger, tracer, z1000];
 
+    for (let i = 1; i < productArray.length + 1; i++) {
+        var box = document.createElement("div");
+        box.classList.add("box");
+        box.id = "box" + i;
+        document.getElementById("container").appendChild(box);
+        var img = document.createElement("img");
+        img.id = "image" + i;
+        img.alt = "IMAGE" + i;
+        document.getElementById("box" + i).appendChild(img);
+        var name = document.createElement("div");
+        name.classList.add("name");
+        name.id = "name" + i;
+        document.getElementById("box" + i).appendChild(name);
+        var price = document.createElement("div");
+        price.classList.add("price");
+        price.id = "price" + i;
+        document.getElementById("box" + i).appendChild(price);
+        var button = document.createElement("button");
+        button.classList.add("Add");
+        button.id = "Add" + i;
+        button.innerText = "Dodaj";
+        document.getElementById("box" + i).appendChild(button);
+    }
 
     for (let i = 1; i < 13; i++) {
 

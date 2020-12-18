@@ -20,7 +20,7 @@ a {
     font-size: 2em;
     text-decoration: none;
 }
-.container {
+#container {
     left: 0;
     display: flex;
     width: 76%;
