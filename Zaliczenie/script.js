@@ -52,32 +52,48 @@ window.onload = function () {
         document.getElementById("price" + i).textContent = productArray[i - 1].price + " zł";
         document.getElementById("image" + i).src = productArray[i - 1].image;
     }
-
+    var clickcounter = 0;
     var totalPrice = 0;
     var shoppingBoxContainer = document.getElementById("shoppingBoxContainer");
 
     for (let i = 1; i < productArray.length + 1; i++) {
         var button = document.getElementById("Add" + i);
-        button.addEventListener('click', function(){
-            totalPrice+= productArray[i - 1].price;
-            var newElement = document.createElement("div");
-            newElement.innerText = productArray[i - 1].name;
-            newElement.classList.add("shoppingBoxName");
-            var newElement2 = document.createElement("div");
-            newElement2.innerText = productArray[i - 1].price;
-            newElement2.classList.add("shoppingBoxPrice");
-            var newElement3 = document.createElement("button");
-            newElement3.classList.add("shoppingBoxButton");
-            newElement3.innerText = "Usuń";
-            shoppingBoxContainer.appendChild(newElement);
-            shoppingBoxContainer.appendChild(newElement2);
-            shoppingBoxContainer.appendChild(newElement3);
-            document.getElementById("totalPrice").textContent = totalPrice;
+        button.addEventListener('click', function () {
+            if(clickcounter < 6) {
+                totalPrice += productArray[i - 1].price;
+                clickcounter = clickcounter + 1;
+                var nameElement = document.createElement("div");
+                nameElement.innerText = productArray[i - 1].name;
+                nameElement.classList.add("shoppingBoxName");
+                nameElement.id = "nameElement" + clickcounter;
+                var buttonElement = document.createElement("button");
+                buttonElement.classList.add("shoppingBoxButton");
+                buttonElement.innerText = "Usuń";
+                buttonElement.id = "buttonElement" + clickcounter;
+                var priceElement = document.createElement("div");
+                priceElement.innerText = productArray[i - 1].price;
+                priceElement.classList.add("shoppingBoxPrice");
+                priceElement.id = "priceElement" + clickcounter;
+                shoppingBoxContainer.appendChild(nameElement);
+                shoppingBoxContainer.appendChild(buttonElement);
+                shoppingBoxContainer.appendChild(priceElement);
+                document.getElementById("totalPrice").textContent = totalPrice;
+            } else {
+                alert("Maksymalna liczba przedmiotów w koszyku");
+            }
+        });
+    }
+    //clickcounter określa maksymalną liczbę przedmiotów w koszyku
+    //nie wiem dlaczego poniższy kod nie działa. na skutek dodania przedmiotu do koszyka tworzą się trzy pola w menu bocznym (nazwa, przycisk usuń i cena). Tym nowo powstałym przycikiem chcę usunąć pola nazwa i cena.
+    if (clickcounter !== 0) {
+        var buttonElement1 = document.getElementById("buttonElement1");
+        var child = document.getElementById("priceElement1");
+        var parent = document.getElementById("shoppingBoxContainer");
+        buttonElement1.addEventListener("click", function() {
+            parent.remove(child);
         });
     }
 
-
-    // var buttonDelete = document.getElementById("delete");
 
     // buttonDelete.addEventListener('click', function(){
     //    var child1 = document.getElementsByClassName("shoppingBoxName");

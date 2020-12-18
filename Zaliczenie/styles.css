@@ -136,6 +136,7 @@ img {
     line-height: 30px;
     text-align: left;
     border: 1px solid black;
+    positon: relative;
 }
 .shoppingBoxButton {
     width: 27%;
@@ -145,6 +146,6 @@ img {
     line-height: 30px;
     text-align: center;
     position: relative;
-    top: -74px;
+    top: -38px;
     left: 68%;
 }
