@@ -21,37 +21,44 @@ window.onload = function () {
     let tracer = new Product('YAMAHA TRACER', 40000, "img/TRACER900.jpg");
     let z1000 = new Product('KAWASAKI Z1000SX', 40000, "img/Z1000SX.jpg");
 
+
     let productArray = [bKing, fazer, gs500, hayabusa, monster, mt10, multistrada, s1000, sv, tiger, tracer, z1000];
 
 
     for (let i = 0; i < productArray.length; i++) {
+
         let productBox = document.createElement("div");
         productBox.classList.add("productBox");
         productBox.id = "productBox" + i;
         document.getElementById("productsContainer").appendChild(productBox);
-        let img = document.createElement("img");
-        // img.id = "image" + i;
-        img.alt = "IMAGE" + i;
-        productBox.appendChild(img);
-        img.src = productArray[i].image;
-        let name = document.createElement("div");
-        name.classList.add("name");
-        // name.id = "name" + i;
-        productBox.appendChild(name);
-        name.innerHTML = '<b>' + productArray[i].name + '</b>';
-        let price = document.createElement("div");
-        price.classList.add("price");
-        // price.id = "price" + i;
-        productBox.appendChild(price);
-        price.textContent = productArray[i].price + " zł";
-        let buttonAdd = document.createElement("button");
-        buttonAdd.classList.add("Add");
-        buttonAdd.id = "Add" + i;
-        buttonAdd.innerText = "Dodaj";
-        productBox.appendChild(buttonAdd);
+
+        let productImg = document.createElement("img");
+        // productImg.id = "image" + i; //można wprowadzić na przyszłość dla ułatwienia dostępu do elementu
+        productImg.alt = "IMAGE" + i;
+        productBox.appendChild(productImg);
+        productImg.src = productArray[i].image;
+
+        let productName = document.createElement("div");
+        productName.classList.add("productName");
+        // productName.id = "name" + i; //można wprowadzić na przyszłość dla ułatwienia dostępu do elementu
+        productBox.appendChild(productName);
+        productName.innerHTML = '<b>' + productArray[i].name + '</b>';
+
+        let productPrice = document.createElement("div");
+        productPrice.classList.add("productPrice");
+        // productPrice.id = "price" + i; //można wprowadzić na przyszłość dla ułatwienia dostępu do elementu
+        productBox.appendChild(productPrice);
+        productPrice.textContent = productArray[i].price + " zł";
+
+        let addProductButton = document.createElement("button");
+        addProductButton.classList.add("Add");
+        addProductButton.id = "Add" + i;
+        addProductButton.innerText = "Dodaj";
+        productBox.appendChild(addProductButton);
     }
 
-    let clickcounter = 0;
+
+    let clickCounter = 0;
     let shoppingBoxContainer = document.getElementById("shoppingBoxContainer");
     let shoppingCartBox = document.getElementById("shopping-cart-box");
     let totalPrice = 0;
@@ -75,69 +82,64 @@ window.onload = function () {
     });
 
     let totalPriceField = document.createElement("div");
-    totalPriceField.id = "totalPrice";
+    totalPriceField.id = "totalPriceField";
     shoppingCartBox.appendChild(totalPriceField);
+    totalPriceField.textContent = totalPrice +" zł";
 
 
     for (let i = 0; i < productArray.length; i++) {
-        let addProductButton= document.getElementById("Add" + i);
-        addProductButton.addEventListener('click', function () {
-            if(clickcounter < 8) {
+        let addProductButtonFunctional= document.getElementById("Add" + i);
+        addProductButtonFunctional.addEventListener('click', function () {
+            if(clickCounter < 8) {
                 totalPrice += productArray[i].price;
-                clickcounter++;
+                clickCounter++;
+
                 let shoppingBoxContainerForOneProduct = document.createElement("div");
                 shoppingBoxContainerForOneProduct.classList.add("shoppingBoxContainerForOneProduct");
                 shoppingBoxContainer.appendChild(shoppingBoxContainerForOneProduct);
-                let nameElement = document.createElement("div");
-                nameElement.innerText = productArray[i].name;
-                nameElement.classList.add("shoppingBoxName");
-                let priceElement = document.createElement("div");
-                priceElement.innerText = productArray[i].price;
-                priceElement.classList.add("shoppingBoxPrice");
-                let buttonElement = document.createElement("button");
-                buttonElement.classList.add("shoppingBoxButton");
-                buttonElement.innerText = "Usuń";
-                shoppingBoxContainerForOneProduct.appendChild(nameElement);
-                shoppingBoxContainerForOneProduct.appendChild(buttonElement);
-                shoppingBoxContainerForOneProduct.appendChild(priceElement);
-                buttonElement.addEventListener("click", function () {
-                    shoppingBoxContainerForOneProduct.removeChild(nameElement);
-                    shoppingBoxContainerForOneProduct.removeChild(buttonElement);
-                    shoppingBoxContainerForOneProduct.removeChild(priceElement);
-                    shoppingBoxContainer.removeChild(shoppingBoxContainerForOneProduct);
-                    clickcounter = clickcounter - 1;
-                    totalPrice = totalPrice - productArray[i].price;
-                    totalPriceField.textContent = totalPrice;
+
+                let shoppingBoxNameElement = document.createElement("div");
+                shoppingBoxNameElement.innerText = productArray[i].name;
+                shoppingBoxNameElement.classList.add("shoppingBoxName");
+
+                let shoppingBoxPriceElement = document.createElement("div");
+                shoppingBoxPriceElement.innerText = productArray[i].price + " zł";
+                shoppingBoxPriceElement.classList.add("shoppingBoxPrice");
+
+                let shoppingBoxButtonElement = document.createElement("button");
+                shoppingBoxButtonElement.classList.add("shoppingBoxButton");
+                shoppingBoxButtonElement.innerText = "Usuń";
+
+                shoppingBoxContainerForOneProduct.appendChild(shoppingBoxNameElement);
+                shoppingBoxContainerForOneProduct.appendChild(shoppingBoxButtonElement);
+                shoppingBoxContainerForOneProduct.appendChild(shoppingBoxPriceElement);
+
+                shoppingBoxButtonElement.addEventListener("click", function () {
+                    deleteFromShoppingBox();
                 });
                 deleteButton.addEventListener("click", function (){
-                    shoppingBoxContainerForOneProduct.removeChild(nameElement);
-                    shoppingBoxContainerForOneProduct.removeChild(buttonElement);
-                    shoppingBoxContainerForOneProduct.removeChild(priceElement);
-                    shoppingBoxContainer.removeChild(shoppingBoxContainerForOneProduct);
-                    clickcounter = clickcounter - 1;
-                    totalPrice = totalPrice - productArray[i].price;
-                    totalPriceField.textContent = totalPrice;
+                    deleteFromShoppingBox();
                 });
-                totalPriceField.textContent = totalPrice;
+                totalPriceField.textContent = totalPrice +" zł";
                 buyButton.addEventListener('click', function () {
                     if(totalPrice != 0) {
-                        shoppingBoxContainerForOneProduct.removeChild(nameElement);
-                        shoppingBoxContainerForOneProduct.removeChild(buttonElement);
-                        shoppingBoxContainerForOneProduct.removeChild(priceElement);
-                        shoppingBoxContainer.removeChild(shoppingBoxContainerForOneProduct);
-                        clickcounter = clickcounter - 1;
-                        totalPrice = totalPrice - productArray[i].price;
-                        totalPriceField.textContent = totalPrice;
+                        deleteFromShoppingBox();
                     }
                 });
+
+                function deleteFromShoppingBox() {
+                    shoppingBoxContainerForOneProduct.removeChild(shoppingBoxNameElement);
+                    shoppingBoxContainerForOneProduct.removeChild(shoppingBoxButtonElement);
+                    shoppingBoxContainerForOneProduct.removeChild(shoppingBoxPriceElement);
+                    shoppingBoxContainer.removeChild(shoppingBoxContainerForOneProduct);
+                    clickCounter--;
+                    totalPrice -= productArray[i].price;
+                    totalPriceField.textContent = totalPrice +" zł";
+                }
             }
             else {
                 alert("Maksymalna liczba przedmiotów w koszyku");
             }
         });
     }
-
-
 }
-
-    //dodać odejmowanie od ceny końcowej cenę usuniętego przedmiotu z koszyka
