@@ -23,7 +23,8 @@ window.onload = function () {
 
     let productArray = [bKing, fazer, gs500, hayabusa, monster, mt10, multistrada, s1000, sv, tiger, tracer, z1000];
 
-    for (let i = 1; i < productArray.length + 1; i++) {
+
+    for (let i = 0; i < productArray.length; i++) {
         let box = document.createElement("div");
         box.classList.add("box");
         box.id = "box" + i;
@@ -31,88 +32,96 @@ window.onload = function () {
         let img = document.createElement("img");
         img.id = "image" + i;
         img.alt = "IMAGE" + i;
-        document.getElementById("box" + i).appendChild(img);
+        box.appendChild(img);
+        img.src = productArray[i].image;
         let name = document.createElement("div");
         name.classList.add("name");
         name.id = "name" + i;
-        document.getElementById("box" + i).appendChild(name);
+        box.appendChild(name);
+        name.innerHTML = '<b>' + productArray[i].name + '</b>';
         let price = document.createElement("div");
         price.classList.add("price");
         price.id = "price" + i;
-        document.getElementById("box" + i).appendChild(price);
+        box.appendChild(price);
+        price.textContent = productArray[i].price + " zł";
         let buttonAdd = document.createElement("button");
         buttonAdd.classList.add("Add");
         buttonAdd.id = "Add" + i;
         buttonAdd.innerText = "Dodaj";
-        document.getElementById("box" + i).appendChild(buttonAdd);
+        box.appendChild(buttonAdd);
     }
 
-    for (let i = 1; i < 13; i++) {
-        document.getElementById("name" + i).innerHTML = '<b>' + productArray[i - 1].name + '</b>';
-        document.getElementById("price" + i).textContent = productArray[i - 1].price + " zł";
-        document.getElementById("image" + i).src = productArray[i - 1].image;
-    }
     let clickcounter = 0;
     let shoppingBoxContainer = document.getElementById("shoppingBoxContainer");
-    let buingPosition = 1;
+    let shoppingCartBox = document.getElementById("shopping-cart-box");
+    let buingPosition = 0;
     let totalPrice = 0;
 
-    for (let i = 1; i < productArray.length + 1; i++) {
+    for (let i = 0; i < productArray.length; i++) {
         let button = document.getElementById("Add" + i);
         button.addEventListener('click', function () {
             if(clickcounter < 6) {
-                totalPrice += productArray[i - 1].price;
+                totalPrice += productArray[i].price;
                 clickcounter++;
+                let shoppingBoxContainerForOneProduct = document.createElement("div");
+                shoppingBoxContainerForOneProduct.id = "shoppingBoxContainerForOneProduct" + buingPosition;
+                shoppingBoxContainerForOneProduct.classList.add("shoppingBoxContainerForOneProduct");
+                shoppingBoxContainer.appendChild(shoppingBoxContainerForOneProduct);
                 let nameElement = document.createElement("div");
-                nameElement.innerText = productArray[i - 1].name;
+                nameElement.innerText = productArray[i].name;
                 nameElement.classList.add("shoppingBoxName");
                 nameElement.id = "nameElement" + buingPosition;
+                let priceElement = document.createElement("div");
+                priceElement.innerText = productArray[i].price;
+                priceElement.classList.add("shoppingBoxPrice");
+                priceElement.id = "priceElement" + buingPosition;
                 let buttonElement = document.createElement("button");
                 buttonElement.classList.add("shoppingBoxButton");
                 buttonElement.innerText = "Usuń";
                 buttonElement.id = "buttonElement" + buingPosition;
-                let priceElement = document.createElement("div");
-                priceElement.innerText = productArray[i - 1].price;
-                priceElement.classList.add("shoppingBoxPrice");
-                priceElement.id = "priceElement" + buingPosition;
-                shoppingBoxContainer.appendChild(nameElement);
-                shoppingBoxContainer.appendChild(buttonElement);
-                shoppingBoxContainer.appendChild(priceElement);
-                console.log('Clickcouter = ' + clickcounter);
-                console.log('buingPosition = ' +buingPosition);
-                console.log(totalPrice);
+                shoppingBoxContainerForOneProduct.appendChild(nameElement);
+                shoppingBoxContainerForOneProduct.appendChild(buttonElement);
+                shoppingBoxContainerForOneProduct.appendChild(priceElement);
+                buttonElement.addEventListener("click", function () {
+                    shoppingBoxContainerForOneProduct.removeChild(nameElement);
+                    shoppingBoxContainerForOneProduct.removeChild(buttonElement);
+                    shoppingBoxContainerForOneProduct.removeChild(priceElement);
+                    shoppingBoxContainer.removeChild(shoppingBoxContainerForOneProduct);
+                    clickcounter = clickcounter - 1;
+                });
                 buingPosition++;
-                document.getElementById("totalPrice").textContent = totalPrice;
+                totalPriceField.textContent = totalPrice;
             }
             else {
                 alert("Maksymalna liczba przedmiotów w koszyku");
             }
-            var ii = 0;
-            for (let j = 1; j < buingPosition + 1; j++) {
-
-                let buttonElement = document.getElementById("buttonElement" + j);
-                // console.log('buttonElement = ' + j + " = "  + buttonElement.id);
-
-                if (buttonElement != null || ii > 0) {
-                    buttonElement.addEventListener("click", function () {
-                    let child1 = document.getElementById("nameElement" + j);
-                    let child2 = document.getElementById("buttonElement" + j);
-                    let child3 = document.getElementById("priceElement" + j);
-                    //błędy są tutaj w konsoli. Elementy koszyka, które zostały usunięte są załatwione przez null, ale chyba iteruje przez pozostałe elementy, które są w koszyku zakupowym i przy nich wskazuje błędy
-                    shoppingBoxContainer.removeChild(child1);
-                    shoppingBoxContainer.removeChild(child2);
-                    shoppingBoxContainer.removeChild(child3);
-                    clickcounter = clickcounter - 1;
-                    ii++;
-
-                        console.log('buttonElement = ' + j + " = "  + buttonElement.id);
-                    console.log('j = ' + j);
-                        console.log('ii = ' + ii);
-                    });
-                } else {
-                    console.log('źle?')
-                };
-            }
         });
     }
+    let buyButton = document.createElement("button");
+    buyButton.id = "buy";
+    buyButton.innerText = "Kup";
+    shoppingCartBox.appendChild(buyButton);
+    buyButton.addEventListener('click', function () {
+        if(totalPrice === 0) {
+            alert("Koszyk jest pusty");
+        } else {
+            alert("Dokonałeś zakupu. Cena produktów z koszyka to: " + totalPrice + "zł");
+        }
+    });
+
+    let deleteButton = document.createElement("button");
+    deleteButton.id = "delete";
+    deleteButton.innerText = "Wyczyść";
+    shoppingCartBox.appendChild(deleteButton);
+    deleteButton.addEventListener("click", function(){
+        totalPrice = 0;
+        totalPriceField.textContent = totalPrice;
+    //    Dodać usunięcie wszystkich elementów z kosza
+    })
+
+    let totalPriceField = document.createElement("div");
+    totalPriceField.id = "totalPrice";
+    shoppingCartBox.appendChild(totalPriceField);
 }
+
+    //dodać odejmowanie od ceny końcowej cenę usuniętego przedmiotu z koszyka
