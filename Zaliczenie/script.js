@@ -25,60 +25,78 @@ window.onload = function () {
 
 
     for (let i = 0; i < productArray.length; i++) {
-        let box = document.createElement("div");
-        box.classList.add("box");
-        box.id = "box" + i;
-        document.getElementById("container").appendChild(box);
+        let productBox = document.createElement("div");
+        productBox.classList.add("productBox");
+        productBox.id = "productBox" + i;
+        document.getElementById("productsContainer").appendChild(productBox);
         let img = document.createElement("img");
-        img.id = "image" + i;
+        // img.id = "image" + i;
         img.alt = "IMAGE" + i;
-        box.appendChild(img);
+        productBox.appendChild(img);
         img.src = productArray[i].image;
         let name = document.createElement("div");
         name.classList.add("name");
-        name.id = "name" + i;
-        box.appendChild(name);
+        // name.id = "name" + i;
+        productBox.appendChild(name);
         name.innerHTML = '<b>' + productArray[i].name + '</b>';
         let price = document.createElement("div");
         price.classList.add("price");
-        price.id = "price" + i;
-        box.appendChild(price);
+        // price.id = "price" + i;
+        productBox.appendChild(price);
         price.textContent = productArray[i].price + " zł";
         let buttonAdd = document.createElement("button");
         buttonAdd.classList.add("Add");
         buttonAdd.id = "Add" + i;
         buttonAdd.innerText = "Dodaj";
-        box.appendChild(buttonAdd);
+        productBox.appendChild(buttonAdd);
     }
 
     let clickcounter = 0;
     let shoppingBoxContainer = document.getElementById("shoppingBoxContainer");
     let shoppingCartBox = document.getElementById("shopping-cart-box");
-    let buingPosition = 0;
     let totalPrice = 0;
 
+    let buyButton = document.createElement("button");
+    buyButton.id = "buy";
+    buyButton.innerText = "Kup";
+    shoppingCartBox.appendChild(buyButton);
+
+    let deleteButton = document.createElement("button");
+    deleteButton.id = "delete";
+    deleteButton.innerText = "Wyczyść";
+    shoppingCartBox.appendChild(deleteButton);
+
+    buyButton.addEventListener('click', function () {
+        if(totalPrice === 0) {
+            alert("Koszyk jest pusty");
+        } else {
+            alert("Dokonałeś zakupu. Cena produktów z koszyka to: " + totalPrice + "zł");
+        }
+    });
+
+    let totalPriceField = document.createElement("div");
+    totalPriceField.id = "totalPrice";
+    shoppingCartBox.appendChild(totalPriceField);
+
+
     for (let i = 0; i < productArray.length; i++) {
-        let button = document.getElementById("Add" + i);
-        button.addEventListener('click', function () {
-            if(clickcounter < 6) {
+        let addProductButton= document.getElementById("Add" + i);
+        addProductButton.addEventListener('click', function () {
+            if(clickcounter < 8) {
                 totalPrice += productArray[i].price;
                 clickcounter++;
                 let shoppingBoxContainerForOneProduct = document.createElement("div");
-                shoppingBoxContainerForOneProduct.id = "shoppingBoxContainerForOneProduct" + buingPosition;
                 shoppingBoxContainerForOneProduct.classList.add("shoppingBoxContainerForOneProduct");
                 shoppingBoxContainer.appendChild(shoppingBoxContainerForOneProduct);
                 let nameElement = document.createElement("div");
                 nameElement.innerText = productArray[i].name;
                 nameElement.classList.add("shoppingBoxName");
-                nameElement.id = "nameElement" + buingPosition;
                 let priceElement = document.createElement("div");
                 priceElement.innerText = productArray[i].price;
                 priceElement.classList.add("shoppingBoxPrice");
-                priceElement.id = "priceElement" + buingPosition;
                 let buttonElement = document.createElement("button");
                 buttonElement.classList.add("shoppingBoxButton");
                 buttonElement.innerText = "Usuń";
-                buttonElement.id = "buttonElement" + buingPosition;
                 shoppingBoxContainerForOneProduct.appendChild(nameElement);
                 shoppingBoxContainerForOneProduct.appendChild(buttonElement);
                 shoppingBoxContainerForOneProduct.appendChild(priceElement);
@@ -88,40 +106,38 @@ window.onload = function () {
                     shoppingBoxContainerForOneProduct.removeChild(priceElement);
                     shoppingBoxContainer.removeChild(shoppingBoxContainerForOneProduct);
                     clickcounter = clickcounter - 1;
+                    totalPrice = totalPrice - productArray[i].price;
+                    totalPriceField.textContent = totalPrice;
                 });
-                buingPosition++;
+                deleteButton.addEventListener("click", function (){
+                    shoppingBoxContainerForOneProduct.removeChild(nameElement);
+                    shoppingBoxContainerForOneProduct.removeChild(buttonElement);
+                    shoppingBoxContainerForOneProduct.removeChild(priceElement);
+                    shoppingBoxContainer.removeChild(shoppingBoxContainerForOneProduct);
+                    clickcounter = clickcounter - 1;
+                    totalPrice = totalPrice - productArray[i].price;
+                    totalPriceField.textContent = totalPrice;
+                });
                 totalPriceField.textContent = totalPrice;
+                buyButton.addEventListener('click', function () {
+                    if(totalPrice != 0) {
+                        shoppingBoxContainerForOneProduct.removeChild(nameElement);
+                        shoppingBoxContainerForOneProduct.removeChild(buttonElement);
+                        shoppingBoxContainerForOneProduct.removeChild(priceElement);
+                        shoppingBoxContainer.removeChild(shoppingBoxContainerForOneProduct);
+                        clickcounter = clickcounter - 1;
+                        totalPrice = totalPrice - productArray[i].price;
+                        totalPriceField.textContent = totalPrice;
+                    }
+                });
             }
             else {
                 alert("Maksymalna liczba przedmiotów w koszyku");
             }
         });
     }
-    let buyButton = document.createElement("button");
-    buyButton.id = "buy";
-    buyButton.innerText = "Kup";
-    shoppingCartBox.appendChild(buyButton);
-    buyButton.addEventListener('click', function () {
-        if(totalPrice === 0) {
-            alert("Koszyk jest pusty");
-        } else {
-            alert("Dokonałeś zakupu. Cena produktów z koszyka to: " + totalPrice + "zł");
-        }
-    });
 
-    let deleteButton = document.createElement("button");
-    deleteButton.id = "delete";
-    deleteButton.innerText = "Wyczyść";
-    shoppingCartBox.appendChild(deleteButton);
-    deleteButton.addEventListener("click", function(){
-        totalPrice = 0;
-        totalPriceField.textContent = totalPrice;
-    //    Dodać usunięcie wszystkich elementów z kosza
-    })
 
-    let totalPriceField = document.createElement("div");
-    totalPriceField.id = "totalPrice";
-    shoppingCartBox.appendChild(totalPriceField);
 }
 
     //dodać odejmowanie od ceny końcowej cenę usuniętego przedmiotu z koszyka

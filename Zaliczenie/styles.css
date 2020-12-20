@@ -31,7 +31,7 @@ a {
     font-size: 2em;
     text-decoration: none;
 }
-#container {
+#productsContainer {
     left: 0;
     top: 100px;
     display: flex;
@@ -46,7 +46,7 @@ a {
     padding: 3%;
 
 }
-.box {
+.productBox {
     width: 240px;
     height: 360px;
     background-color: #808080;
