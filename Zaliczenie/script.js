@@ -2,13 +2,8 @@ window.onload = function () {
 
     let languageFromLocalStorage = localStorage.getItem('language');
     let languageButton = document.getElementById('language');
-    let language = setLanguageOfSite();
 
-    setOtherLanguageForButton();
-
-    languageButton.addEventListener('click', chooseLanguage);
-
-    function setLanguageOfSite() {
+    let setLanguageOfSite = () => {
         if(languageFromLocalStorage) {
             return languageFromLocalStorage;
         } else {
@@ -16,7 +11,7 @@ window.onload = function () {
         }
     }
 
-    function setOtherLanguageForButton() {
+    let setOtherLanguageForButton = () => {
         if(language === 'PL') {
             languageButton.textContent = 'ENG';
         } else if(language === 'ENG') {
@@ -24,7 +19,7 @@ window.onload = function () {
         }
     }
 
-    function chooseLanguage() {
+    let chooseLanguage = () => {
         if(languageButton.innerText === 'PL') {
             localStorage.setItem('language', 'PL');
             location.reload();
@@ -34,12 +29,16 @@ window.onload = function () {
         }
     }
 
-    function changeWordLanguage(word) {
+    let changeWordLanguage = (word) => {
         switch (language) {
             case 'ENG': return texts[word];
             default: return word;
         }
     }
+
+    let language = setLanguageOfSite();
+    setOtherLanguageForButton();
+    languageButton.addEventListener('click', chooseLanguage);
 
     let shop = document.getElementById('shop');
     let delivery = document.getElementById('delivery');
