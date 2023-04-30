@@ -20,10 +20,10 @@ window.onload = function () {
     }
 
     let chooseLanguage = () => {
-        if(languageButton.innerText === 'PL') {
+        if(languageButton.textContent === 'PL') {
             localStorage.setItem('language', 'PL');
             location.reload();
-        } else if(languageButton.innerText === 'ENG') {
+        } else if(languageButton.textContent === 'ENG') {
             localStorage.setItem('language', 'ENG');
             location.reload();
         }
@@ -44,9 +44,9 @@ window.onload = function () {
     let delivery = document.getElementById('delivery');
     let registration = document.getElementById('registration');
 
-    shop.innerText = changeWordLanguage(shop.innerText);
-    delivery.innerText = changeWordLanguage(delivery.innerText);
-    registration.innerText = changeWordLanguage(registration.innerText);
+    shop.textContent = changeWordLanguage(shop.textContent);
+    delivery.textContent = changeWordLanguage(delivery.textContent);
+    registration.textContent = changeWordLanguage(registration.textContent);
 
     class Product {
         constructor(name, price, image) {
@@ -98,7 +98,7 @@ window.onload = function () {
         let addProductButton = document.createElement("button");
         addProductButton.classList.add("Add");
         addProductButton.id = "Add" + i;
-        addProductButton.innerText = changeWordLanguage('Dodaj');
+        addProductButton.textContent = changeWordLanguage('Dodaj');
         productBox.appendChild(addProductButton);
     }
 
@@ -110,12 +110,12 @@ window.onload = function () {
 
     let buyButton = document.createElement("button");
     buyButton.id = "buy";
-    buyButton.innerText = changeWordLanguage("Kup");
+    buyButton.textContent = changeWordLanguage("Kup");
     shoppingCartBox.appendChild(buyButton);
 
     let deleteButton = document.createElement("button");
     deleteButton.id = "delete";
-    deleteButton.innerText = changeWordLanguage("Wyczyść");
+    deleteButton.textContent = changeWordLanguage("Wyczyść");
     shoppingCartBox.appendChild(deleteButton);
 
     buyButton.addEventListener('click', function () {
@@ -144,16 +144,16 @@ window.onload = function () {
                 shoppingBoxContainer.appendChild(shoppingBoxContainerForOneProduct);
 
                 let shoppingBoxNameElement = document.createElement("div");
-                shoppingBoxNameElement.innerText = productArray[i].name;
+                shoppingBoxNameElement.textContent = productArray[i].name;
                 shoppingBoxNameElement.classList.add("shoppingBoxName");
 
                 let shoppingBoxPriceElement = document.createElement("div");
-                shoppingBoxPriceElement.innerText = productArray[i].price + " zł";
+                shoppingBoxPriceElement.textContent = productArray[i].price + " zł";
                 shoppingBoxPriceElement.classList.add("shoppingBoxPrice");
 
                 let shoppingBoxButtonElement = document.createElement("button");
                 shoppingBoxButtonElement.classList.add("shoppingBoxButton");
-                shoppingBoxButtonElement.innerText = changeWordLanguage("Usuń");
+                shoppingBoxButtonElement.textContent = changeWordLanguage("Usuń");
 
                 shoppingBoxContainerForOneProduct.appendChild(shoppingBoxNameElement);
                 shoppingBoxContainerForOneProduct.appendChild(shoppingBoxButtonElement);
