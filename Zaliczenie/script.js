@@ -1,5 +1,54 @@
 window.onload = function () {
 
+    let languageFromLocalStorage = localStorage.getItem('language');
+    let languageButton = document.getElementById('language');
+    let language = setLanguageOfSite();
+
+    setOtherLanguageForButton();
+
+    languageButton.addEventListener('click', chooseLanguage);
+
+    function setLanguageOfSite() {
+        if(languageFromLocalStorage) {
+            return languageFromLocalStorage;
+        } else {
+            return 'PL';
+        }
+    }
+
+    function setOtherLanguageForButton() {
+        if(language === 'PL') {
+            languageButton.textContent = 'ENG';
+        } else if(language === 'ENG') {
+            languageButton.textContent = 'PL';
+        }
+    }
+
+    function chooseLanguage() {
+        if(languageButton.innerText === 'PL') {
+            localStorage.setItem('language', 'PL');
+            location.reload();
+        } else if(languageButton.innerText === 'ENG') {
+            localStorage.setItem('language', 'ENG');
+            location.reload();
+        }
+    }
+
+    function changeWordLanguage(word) {
+        switch (language) {
+            case 'ENG': return texts[word];
+            default: return word;
+        }
+    }
+
+    let shop = document.getElementById('shop');
+    let delivery = document.getElementById('delivery');
+    let registration = document.getElementById('registration');
+
+    shop.innerText = changeWordLanguage(shop.innerText);
+    delivery.innerText = changeWordLanguage(delivery.innerText);
+    registration.innerText = changeWordLanguage(registration.innerText);
+
     class Product {
         constructor(name, price, image) {
             this.name = name;
@@ -33,27 +82,24 @@ window.onload = function () {
         document.getElementById("productsContainer").appendChild(productBox);
 
         let productImg = document.createElement("img");
-        // productImg.id = "image" + i; //można wprowadzić na przyszłość dla ułatwienia dostępu do elementu
         productImg.alt = "IMAGE" + i;
         productBox.appendChild(productImg);
         productImg.src = productArray[i].image;
 
         let productName = document.createElement("div");
         productName.classList.add("productName");
-        // productName.id = "name" + i; //można wprowadzić na przyszłość dla ułatwienia dostępu do elementu
         productBox.appendChild(productName);
         productName.innerHTML = '<b>' + productArray[i].name + '</b>';
 
         let productPrice = document.createElement("div");
         productPrice.classList.add("productPrice");
-        // productPrice.id = "price" + i; //można wprowadzić na przyszłość dla ułatwienia dostępu do elementu
         productBox.appendChild(productPrice);
         productPrice.textContent = productArray[i].price + " zł";
 
         let addProductButton = document.createElement("button");
         addProductButton.classList.add("Add");
         addProductButton.id = "Add" + i;
-        addProductButton.innerText = "Dodaj";
+        addProductButton.innerText = changeWordLanguage('Dodaj');
         productBox.appendChild(addProductButton);
     }
 
@@ -65,19 +111,19 @@ window.onload = function () {
 
     let buyButton = document.createElement("button");
     buyButton.id = "buy";
-    buyButton.innerText = "Kup";
+    buyButton.innerText = changeWordLanguage("Kup");
     shoppingCartBox.appendChild(buyButton);
 
     let deleteButton = document.createElement("button");
     deleteButton.id = "delete";
-    deleteButton.innerText = "Wyczyść";
+    deleteButton.innerText = changeWordLanguage("Wyczyść");
     shoppingCartBox.appendChild(deleteButton);
 
     buyButton.addEventListener('click', function () {
         if(totalPrice === 0) {
-            alert("Koszyk jest pusty");
+            alert(changeWordLanguage("Koszyk jest pusty"));
         } else {
-            alert("Dokonałeś zakupu. Cena produktów z koszyka to: " + totalPrice + "zł");
+            alert(`${changeWordLanguage("Dokonałeś zakupu. Cena produktów z koszyka to: ")}${totalPrice}zł`);
         }
     });
 
@@ -108,7 +154,7 @@ window.onload = function () {
 
                 let shoppingBoxButtonElement = document.createElement("button");
                 shoppingBoxButtonElement.classList.add("shoppingBoxButton");
-                shoppingBoxButtonElement.innerText = "Usuń";
+                shoppingBoxButtonElement.innerText = changeWordLanguage("Usuń");
 
                 shoppingBoxContainerForOneProduct.appendChild(shoppingBoxNameElement);
                 shoppingBoxContainerForOneProduct.appendChild(shoppingBoxButtonElement);
@@ -122,7 +168,7 @@ window.onload = function () {
                 });
                 totalPriceField.textContent = totalPrice +" zł";
                 buyButton.addEventListener('click', function () {
-                    if(totalPrice != 0) {
+                    if(totalPrice !== 0) {
                         deleteFromShoppingBox();
                     }
                 });
@@ -138,7 +184,7 @@ window.onload = function () {
                 }
             }
             else {
-                alert("Maksymalna liczba przedmiotów w koszyku");
+                alert(changeWordLanguage("Maksymalna liczba przedmiotów w koszyku"));
             }
         });
     }

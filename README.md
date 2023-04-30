@@ -1,7 +1,7 @@
 # Simple_Website_Front
 
 ### Description
-Simple home page of an online store website.
+Simple multi-language home page of an online store website.
 
 ### Tech stack
 * Java Script
